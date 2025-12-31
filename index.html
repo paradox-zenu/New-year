@@ -10,6 +10,7 @@
         :root {
             --gold-leaf: linear-gradient(90deg, #d4af37, #f7ef8a, #d4af37, #f7ef8a);
             --void: #020204;
+            --card-base: #fdfdfd;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -85,8 +86,8 @@
         }
 
         .master-envelope {
-            width: 420px;
-            height: 280px;
+            width: 440px;
+            height: 300px;
             background: #ffffff;
             position: relative;
             transform-style: preserve-3d;
@@ -105,33 +106,52 @@
 
         .master-envelope.open .envelope-flap { transform: rotateX(170deg); }
 
-        /* 📜 THE "INVINCIBLE" CARD */
+        /* 📜 THE REFINED LUXURY CARD */
         .letter-inner {
             position: absolute;
             top: 10px; left: 10px;
-            width: 400px; height: 260px;
-            background: #fff;
-            padding: 60px;
+            width: 420px; height: 280px;
+            
+            /* Paper Texture & Color */
+            background-color: var(--card-base);
+            background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+            
+            padding: 40px;
             z-index: 5;
-            transition: 1.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: 1.8s cubic-bezier(0.19, 1, 0.22, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-radius: 3px;
+
+            /* 🏆 THE "INVINCIBLE" CARD FRAME */
+            border: 1px solid #c5a059; 
+            box-shadow: 
+                inset 0 0 15px rgba(0,0,0,0.05), /* Inner shadow for depth */
+                inset 0 0 0 10px #fff,             /* White Margin */
+                inset 0 0 0 11.5px #d4af37,        /* Sharp Gold Inlay */
+                inset 0 0 0 14px #fff,             /* Inner White Margin */
+                0 20px 40px rgba(0,0,0,0.2);       /* Outer shadow */
         }
 
         .master-envelope.open .letter-inner {
-            transform: translateY(-360px) translateZ(80px);
-            height: 580px;
-            box-shadow: 0 40px 150px rgba(0,0,0,0.4);
+            transform: translateY(-380px) translateZ(100px);
+            height: 620px;
+            box-shadow: 
+                0 50px 150px rgba(0,0,0,0.5),
+                inset 0 0 0 15px #fff, 
+                inset 0 0 0 17px #d4af37,
+                inset 0 0 0 21px #fff;
         }
 
-        .reveal-content { opacity: 0; transition: 1s 1.3s; text-align: center; width: 100%; }
+        .reveal-content { opacity: 0; transition: 1s 1.3s; text-align: center; width: 100%; height: 100%; display: flex; flex-direction: column; }
         .master-envelope.open .reveal-content { opacity: 1; }
 
         /* 🖋️ CALLIGRAPHY PEAK */
         .greeting-title {
             font-family: 'Birthstone', cursive;
-            font-size: 5rem;
+            font-size: 5.5rem;
+            margin-bottom: 5px;
             background: var(--gold-leaf);
             background-size: 300% auto;
             -webkit-background-clip: text;
@@ -141,10 +161,27 @@
 
         @keyframes flow { to { background-position: 300% center; } }
 
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: #d4af37;
+            margin: 20px auto;
+            position: relative;
+        }
+        .divider::before, .divider::after {
+            content: '◆';
+            position: absolute;
+            color: #d4af37;
+            font-size: 8px;
+            top: -5px;
+        }
+        .divider::before { left: -12px; }
+        .divider::after { right: -12px; }
+
         /* 🏆 THE LIQUID GOLD BUTTON */
         .btn-destiny {
             margin-top: auto;
-            padding: 20px 50px;
+            padding: 22px 55px;
             background: #000;
             color: #fff;
             border: none;
@@ -156,12 +193,14 @@
             position: relative;
             overflow: hidden;
             transition: 0.4s;
+            border: 1px solid #d4af37;
         }
 
         .btn-destiny:hover {
             background: #fff;
             color: #000;
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
     </style>
@@ -186,8 +225,8 @@
                 <div class="reveal-content">
                     <p style="font-weight: 300; letter-spacing: 10px; font-size: 0.6rem; color: #bbb; margin-bottom: 20px; text-transform: uppercase;">A Message Across Time</p>
                     <h2 class="greeting-title">Happy New Year</h2>
-                    <div style="width: 25px; height: 1px; background: #eee; margin: 30px auto;"></div>
-                    <p style="color: #444; line-height: 2.2; font-weight: 300; font-size: 1rem; max-width: 80%; margin: 0 auto;">
+                    <div class="divider"></div>
+                    <p style="color: #444; line-height: 2.2; font-weight: 300; font-size: 1rem; max-width: 85%; margin: 0 auto; font-style: italic;">
                         "As 2026 unfolds, may you find the strength to dream without limits and the grace to live with an open heart."
                     </p>
                     <button class="btn-destiny" onclick="finalBlessing(event)">SEAL WITH LOVE ❤️</button>
@@ -196,7 +235,7 @@
 
             <div style="position: absolute; bottom: 0; width: 100%; height: 100%; background: #fff; z-index: 4; clip-path: polygon(0 40%, 50% 100%, 0 100%);"></div>
             <div style="position: absolute; bottom: 0; right:0; width: 100%; height: 100%; background: #fff; z-index: 4; clip-path: polygon(100% 40%, 50% 100%, 100% 100%);"></div>
-            <div style="position: absolute; bottom: 0; width: 100%; height: 60%; background: #fcfcfc; z-index: 3; clip-path: polygon(0 100%, 100% 100%, 50% 0);"></div>
+            <div style="position: absolute; bottom: 0; width: 100%; height: 60%; background: #fdfdfd; z-index: 3; clip-path: polygon(0 100%, 100% 100%, 50% 0);"></div>
         </div>
     </div>
 
@@ -205,7 +244,6 @@
         const env = document.getElementById('env');
         const stage = document.getElementById('main-stage');
 
-        // 🧬 FLUID KINETICS
         function handleKinetics(e) {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
@@ -217,7 +255,6 @@
             }
         }
 
-        // ✨ PARTICLE SYSTEM
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let pts = [];
@@ -239,7 +276,6 @@
         }
         init(); animate();
 
-        // 🚀 THE REVEAL SEQUENCE
         function initiateSequence() {
             const startNode = document.getElementById('start-node');
             
@@ -265,7 +301,6 @@
             }, 800);
         }
 
-        // 🎆 THE FINAL BLESSING
         function finalBlessing(e) {
             e.stopPropagation();
             const end = Date.now() + 4000;
@@ -283,3 +318,4 @@
     </script>
 </body>
 </html>
+
