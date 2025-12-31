@@ -39,43 +39,75 @@
             transition: transform 0.15s ease-out;
         }
 
-        /* 🌫️ FLOATING VOID PARTICLES */
+        /* 🌫️ KINETIC NEBULA BACKGROUND */
         #particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #020204 100%);
         }
 
-        /* ☀️ THE CORE: MINIMALIST LIGHT */
+        /* ☀️ THE CORE: PORTAL */
         .portal-trigger {
             position: relative;
             z-index: 100;
             text-align: center;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         .portal-core {
-            width: 180px; height: 180px;
-            border: 1px solid rgba(255,255,255,0.2);
+            width: 200px; height: 200px;
+            border: 2px solid rgba(255,255,255,0.1);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: 0.8s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(5px);
         }
+
+        /* Rotating Ring */
+        .portal-core::after {
+            content: '';
+            position: absolute;
+            width: 110%; height: 110%;
+            border: 1px solid var(--gold-leaf);
+            border-radius: 50%;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            animation: spin 3s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .portal-core:hover {
             border-color: #fff;
-            box-shadow: 0 0 50px rgba(255,255,255,0.1);
+            box-shadow: 0 0 70px rgba(255,255,255,0.15);
+            transform: scale(1.05);
         }
 
         .portal-core h1 {
             font-family: 'Cinzel';
             font-weight: 900;
-            font-size: 2.8rem;
+            font-size: 1.8rem;
             color: #fff;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
+            animation: textGlow 2s ease-in-out infinite alternate;
+            text-align: center;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff; opacity: 0.7; }
+            to { text-shadow: 0 0 20px #d4af37, 0 0 40px #d4af37; opacity: 1; }
         }
 
         /* ✉️ THE PRISTINE ENVELOPE */
@@ -111,11 +143,8 @@
             position: absolute;
             top: 10px; left: 10px;
             width: 420px; height: 280px;
-            
-            /* Paper Texture & Color */
             background-color: var(--card-base);
             background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
-            
             padding: 40px;
             z-index: 5;
             transition: 1.8s cubic-bezier(0.19, 1, 0.22, 1);
@@ -123,15 +152,13 @@
             flex-direction: column;
             align-items: center;
             border-radius: 3px;
-
-            /* 🏆 THE "INVINCIBLE" CARD FRAME */
             border: 1px solid #c5a059; 
             box-shadow: 
-                inset 0 0 15px rgba(0,0,0,0.05), /* Inner shadow for depth */
-                inset 0 0 0 10px #fff,             /* White Margin */
-                inset 0 0 0 11.5px #d4af37,        /* Sharp Gold Inlay */
-                inset 0 0 0 14px #fff,             /* Inner White Margin */
-                0 20px 40px rgba(0,0,0,0.2);       /* Outer shadow */
+                inset 0 0 15px rgba(0,0,0,0.05),
+                inset 0 0 0 10px #fff,
+                inset 0 0 0 11.5px #d4af37,
+                inset 0 0 0 14px #fff,
+                0 20px 40px rgba(0,0,0,0.2);
         }
 
         .master-envelope.open .letter-inner {
@@ -147,7 +174,6 @@
         .reveal-content { opacity: 0; transition: 1s 1.3s; text-align: center; width: 100%; height: 100%; display: flex; flex-direction: column; }
         .master-envelope.open .reveal-content { opacity: 1; }
 
-        /* 🖋️ CALLIGRAPHY PEAK */
         .greeting-title {
             font-family: 'Birthstone', cursive;
             font-size: 5.5rem;
@@ -162,44 +188,31 @@
         @keyframes flow { to { background-position: 300% center; } }
 
         .divider {
-            width: 60px;
-            height: 1px;
-            background: #d4af37;
-            margin: 20px auto;
-            position: relative;
+            width: 60px; height: 1px; background: #d4af37; margin: 20px auto; position: relative;
         }
         .divider::before, .divider::after {
-            content: '◆';
-            position: absolute;
-            color: #d4af37;
-            font-size: 8px;
-            top: -5px;
+            content: '◆'; position: absolute; color: #d4af37; font-size: 8px; top: -5px;
         }
         .divider::before { left: -12px; }
         .divider::after { right: -12px; }
 
-        /* 🏆 THE LIQUID GOLD BUTTON */
         .btn-destiny {
             margin-top: auto;
             padding: 22px 55px;
             background: #000;
             color: #fff;
-            border: none;
+            border: 1px solid #d4af37;
             font-family: 'Cinzel';
             font-weight: 400;
             font-size: 0.9rem;
             letter-spacing: 6px;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
             transition: 0.4s;
-            border: 1px solid #d4af37;
         }
 
         .btn-destiny:hover {
             background: #fff;
             color: #000;
-            transform: scale(1.05);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
@@ -212,9 +225,9 @@
 
     <div class="portal-trigger" id="start-node" onclick="initiateSequence()">
         <div class="portal-core">
-            <h1>2026</h1>
+            <h1>TAP<br>HERE</h1>
         </div>
-        <p style="color: #fff; margin-top: 40px; font-weight: 100; letter-spacing: 12px; opacity: 0.3; font-size: 0.7rem;">ENTER THE CHAPTER</p>
+        <p style="color: #fff; margin-top: 40px; font-weight: 100; letter-spacing: 8px; opacity: 0.4; font-size: 0.7rem;">CHAPTER 2026</p>
     </div>
 
     <div id="main-stage">
@@ -255,6 +268,7 @@
             }
         }
 
+        // --- ADVANCED NEBULA SYSTEM ---
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let pts = [];
@@ -262,19 +276,40 @@
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            for(let i=0; i<80; i++) pts.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5 });
+            pts = [];
+            for(let i=0; i<120; i++) {
+                pts.push({ 
+                    x: Math.random()*canvas.width, 
+                    y: Math.random()*canvas.height, 
+                    s: Math.random()*2,
+                    o: Math.random(),
+                    v: Math.random() * 0.5 + 0.1
+                });
+            }
         }
 
         function animate() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "rgba(255,255,255,0.2)";
             pts.forEach(p => {
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
-                p.y -= 0.3; if(p.y < 0) p.y = canvas.height;
+                ctx.beginPath();
+                ctx.globalAlpha = p.o;
+                ctx.fillStyle = "white";
+                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
+                ctx.fill();
+                
+                p.y -= p.v;
+                if(p.y < 0) p.y = canvas.height;
+                
+                // Pulsing effect
+                p.o += 0.01;
+                if(p.o > 1) p.o = 0;
             });
             requestAnimationFrame(animate);
         }
-        init(); animate();
+        
+        window.addEventListener('resize', init);
+        init(); 
+        animate();
 
         function initiateSequence() {
             const startNode = document.getElementById('start-node');
@@ -283,8 +318,7 @@
                 particleCount: 150,
                 spread: 120,
                 origin: { y: 0.5 },
-                colors: ['#ffffff', '#d4af37'],
-                disableForReducedMotion: true
+                colors: ['#ffffff', '#d4af37']
             });
 
             startNode.style.filter = "blur(20px)";
@@ -304,13 +338,11 @@
         function finalBlessing(e) {
             e.stopPropagation();
             const end = Date.now() + 4000;
-
             (function frame() {
                 confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ffffff', '#d4af37'] });
                 confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ffffff', '#d4af37'] });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
-
             setTimeout(() => {
                 alert("✨ Sent with love. Have a magnificent 2026! ✨");
             }, 1000);
@@ -318,4 +350,3 @@
     </script>
 </body>
 </html>
-
