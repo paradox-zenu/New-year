@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026 | Sparkle Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --gold: #d4af37;
+            --envelope-color: #ffffff;
+            --paper-color: #fdfaf5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1500px;
+        }
+
+        /* --- ✨ SPARKLE ANIMATION CSS --- */
+        .sparkle-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #fff, var(--gold), #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .sparkle-particle {
+            position: absolute;
+            background: radial-gradient(circle, #fff, var(--gold));
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkleFly 2s ease-out forwards;
+        }
+
+        @keyframes sparkleFly {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+        }
+
+        /* --- SCREEN & CONTAINER --- */
+        .container {
+            width: 90%;
+            max-width: 420px;
+            height: 650px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .screen.active { display: flex; align-items: center; justify-content: center; animation: fadeIn 1s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- ENVELOPE & CARD --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: var(--envelope-color);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: 0.5s;
+        }
+
+        .envelope-flap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #eee; clip-path: polygon(0 0, 50% 55%, 100% 0);
+            z-index: 3; transform-origin: top; transition: 0.6s;
+        }
+
+        .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+
+        .envelope-front {
+            position: absolute; width: 100%; height: 100%;
+            background: #fff; clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+            z-index: 2;
+        }
+
+        .letter-card {
+            position: absolute; top: 5px; left: 10px; width: 280px; height: 180px;
+            background: var(--paper-color); padding: 25px; z-index: 1;
+            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            color: #333; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .envelope-wrapper.open .letter-card {
+            transform: translateY(-280px); height: 460px; z-index: 5;
+            width: 320px; left: -10px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-inner-content { opacity: 0; transition: 0.5s 0.6s; text-align: center; }
+        .envelope-wrapper.open .card-inner-content { opacity: 1; }
+
+        .wax-seal {
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            width: 55px; height: 55px; background: radial-gradient(#d4af37, #b8860b);
+            border-radius: 50%; z-index: 4; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .envelope-wrapper.open .wax-seal { opacity: 0; }
+
+        button {
+            background: linear-gradient(45deg, var(--primary), #7209b7);
+            color: white; border: none; padding: 15px 35px;
+            border-radius: 50px; font-weight: 600; cursor: pointer;
+            margin-top: 40px; box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            transition: 0.3s; text-transform: uppercase;
+        }
+
+        button:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(255, 77, 109, 0.5); }
+    </style>
+</head>
+<body onload="createSparkles()">
+
+    <div class="sparkle-canvas" id="sparkle-layer"></div>
+
+    <div class="container">
+        <div id="screen1" class="screen active">
+            <div style="font-size: 70px; animation: heartbeat 2s infinite;">✨</div>
+            <h1 class="shimmer-text" style="font-size: 4rem; margin: 10px 0;">2026</h1>
+            <p style="letter-spacing: 2px; font-weight: 300;">THE MAGIC AWAITS</p>
+            <button onclick="nextScreen(2)">BEGIN EXPERIENCE ✨</button>
+        </div>
+
+        <div id="screen2" class="screen">
+            <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+                <div class="envelope-flap"></div>
+                <div class="envelope-front"></div>
+                <div class="wax-seal">✨</div>
+                
+                <div class="letter-card">
+                    <div class="card-inner-content">
+                        <div style="font-size: 50px; margin-bottom: 10px;">❤️</div>
+                        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2rem; color: #8b0000;">Happy New Year 2026</h2>
+                        <p style="font-size: 0.7rem; letter-spacing: 3px; margin: 10px 0;">FOR SOMEONE SPECIAL</p>
+                        <div style="width: 60px; height: 1px; background: var(--gold); margin: 15px auto;"></div>
+                        <p style="font-family: 'Caveat', cursive; font-size: 1.4rem; color: #444;">
+                            "May your journey be filled with joy, success, and endless magic. 2026 is your year to shine!"
+                        </p>
+                        <button onclick="sealAction(event)" style="margin-top: 30px;">SEAL WITH A KISS 💋</button>
+                    </div>
+                </div>
+            </div>
+            <p id="instruction" style="margin-top: 180px; font-size: 0.8rem; opacity: 0.6;">Tap the letter to open</p>
+        </div>
+    </div>
+
+    <script>
+        // --- FUNCTION TO CREATE SPARKLE ANIMATION ---
+        function createSparkles() {
+            const layer = document.getElementById('sparkle-layer');
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const s = document.createElement('div');
+                    s.className = 'sparkle-particle';
+                    const size = Math.random() * 8 + 4;
+                    s.style.width = size + 'px';
+                    s.style.height = size + 'px';
+                    s.style.left = Math.random() * 100 + 'vw';
+                    s.style.top = Math.random() * 100 + 'vh';
+                    layer.appendChild(s);
+                    
+                    // Remove after animation finishes
+                    setTimeout(() => s.remove(), 2000);
+                }, i * 100);
+            }
+        }
+
+        function nextScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + num).classList.add('active');
+            if (num === 2) createSparkles(); // Sparkle again when moving to letter
+        }
+
+        function openLetter() {
+            document.getElementById('envelope').classList.add('open');
+            document.getElementById('instruction').style.opacity = '0';
+        }
+
+        function sealAction(event) {
+            event.stopPropagation();
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#d4af37', '#ffffff']
+            });
+            setTimeout(() => {
+                alert("Sent to your heart! ❤️ Happy New Year 2026!");
+            }, 600);
+        }
+    </script>
+</body>
+</html>
